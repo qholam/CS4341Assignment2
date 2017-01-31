@@ -1,8 +1,9 @@
 
 public class FirstChoiceHillClimbing {
-	public Node firstChoiceHillClimbing(int[][] intitBin){
+	
+	public Node firstChoiceHillClimbingSearch(int[][] intitBin){
          int curScore = ;//find score of initBin
-         Node current = makeNode(initBin, initScore);
+         Node current = makeNode(intitBin, curScore);
          
          int numMovesGenerated = 0;
          
@@ -10,13 +11,14 @@ public class FirstChoiceHillClimbing {
            int[][] neighbor = generateNeighbor(current.bins);
            int neighborScore = ; //find score of neighbor
            if( neighborScore > curScore){
-             current = makeNode(neighbor, neighbor score);
+             current = makeNode(neighbor, neighborScore);
              curScore = neighborScore;
              numMovesGenerated = 0;
            }
            else
              numMovesGenerated++;
          }
+         
          if(time allows){
            //redo first choice hill climbing
          }
