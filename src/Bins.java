@@ -23,6 +23,8 @@ public class Bins {
 		 * hashmap now of number of each which can be changed in inValid
 		 */
 	}
+	
+	public Bins(){}
 
 	// parses the list into three bins and returns them as one 2D array
 	protected int[][] fillBins(int[] nums) {
