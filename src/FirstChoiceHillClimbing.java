@@ -59,6 +59,11 @@ public class FirstChoiceHillClimbing {
 		return current;
 	}
 
+	/**
+	 * Generates a neighbor by swapping 2 elements in the 2d array.
+	 * @param bins
+	 * @return
+	 */
 	public static int[][] generateNeighbor(int[][] bins) {
 		int a = 0 + (int) (Math.random() * bins.length);// random # between 0
 														// and bins.length
