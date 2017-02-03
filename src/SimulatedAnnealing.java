@@ -10,7 +10,7 @@ public class SimulatedAnnealing {
 	 * Creates bins and runs simulated annealing with repeats
 	 */
 	public static void runSearch(Bins initBin) {
-		int[] nums = { 0, -4, 6, 8, 5, -7, -6, -7, 5 };
+		int[] nums = { 0, -4, 6, 8, 5, -7, -6, -7, 5, 0, -4, 6, 8, 5, -7, -6, -7, 5 };
 		//Bins cur = initBin;
 		Bins cur = new Bins(nums);
 
@@ -18,7 +18,7 @@ public class SimulatedAnnealing {
 		Node best = simulatedAnnealingSearch(cur);
 		
 		//repeat simulated annealing 10 more times with new start point
-		for(int i = 0; i < 10; i++){
+		for(int i = 0; i < 0; i++){
 			//get a new starting point
 			//cur = new Bins(b.num);
 			cur = new Bins(nums);
@@ -49,7 +49,7 @@ public class SimulatedAnnealing {
 		Node best = current;
 		
 		//set initial temperature
-		double t = 1000;
+		double t = 10000;
 		//set a cooling rate;
 		double coolingRate = 0.0001;
 
@@ -59,15 +59,16 @@ public class SimulatedAnnealing {
 			int neighborScore = new Bins().calBins(neighbor); 
 					
 			//see if we should accept move
-			if(acceptanceProbability(curScore, neighborScore, t) > Math.random()){
-				//keep track of best move
-				if(neighborScore > curScore){
-					best = current;
-				}
-				
+			double a = acceptanceProbability(curScore, neighborScore, t);
+			if(a > Math.random()){
 				//select move
 				current = new Node(neighbor, neighborScore);
 				curScore = neighborScore;
+				
+				//keep track of best move
+				if(curScore > best.score){
+					best = current;
+				}
 			}
 			
 			//reduce the temperature
@@ -89,11 +90,12 @@ public class SimulatedAnnealing {
 		//if new score is better always accept
 		if(newScore > curScore)
 			return 1.0;
-		
-		//otherwise return some probability(found this function in the book)
-		//This returns some number between 0.000....1 and 0.999..
-		//The higher t is, the closer the probability of taking the move will be
-		return Math.exp((newScore-curScore)/t);
+		else{
+			//otherwise return some probability(found this function in the book)
+			//This returns some number between 0.000....1 and 0.999..
+			//The higher t is, the closer the probability of taking the move will be
+			return Math.exp((newScore-curScore)/t);
+		}
 	}
 	
 	/**

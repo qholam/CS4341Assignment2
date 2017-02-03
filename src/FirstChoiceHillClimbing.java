@@ -10,7 +10,7 @@ public class FirstChoiceHillClimbing {
 	 * Creates bins and runs first choice hill climbing with repeats
 	 */
 	public static void runSearch(Bins initBin) {
-		int[] nums = { 0, -4, 6, 8, 5, -7, -6, -7, 5 };
+		int[] nums = { 0, -4, 6, 8, 5, -7, -6, -7, 5, 0, -4, 6, 8, 5, -7, -6, -7, 5 };
 		//Bins cur = initBin;
 		Bins cur = new Bins(nums);
 
