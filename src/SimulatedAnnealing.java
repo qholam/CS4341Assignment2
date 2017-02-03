@@ -3,30 +3,14 @@ import java.util.Arrays;
 public class SimulatedAnnealing {
 	
 	public static void main(String[] args){
-		runSearch(new Bins());
-	}
-	
-	/**
-	 * Creates bins and runs simulated annealing with repeats
-	 */
-	public static void runSearch(Bins initBin) {
-		int[] nums = { 0, -4, 6, 8, 5, -7, -6, -7, 5, 0, -4, 6, 8, 5, -7, -6, -7, 5 };
-		//Bins cur = initBin;
+		int[] nums = { 0, -4, 6, 8, 5, -7, -6, -7, 5, 0, -4, 6, 8, 5, -7, -6, -7, 5, 0, -4, 6, 8, 5, -7, -6, -7, 5, 0, -4, 6, 8, 5, -7, -6, -7, 5 };
 		Bins cur = new Bins(nums);
-
-		//do initial search
-		Node best = simulatedAnnealingSearch(cur);
 		
-		//repeat simulated annealing 10 more times with new start point
-		for(int i = 0; i < 0; i++){
-			//get a new starting point
-			//cur = new Bins(b.num);
-			cur = new Bins(nums);
-			
-			Node temp = simulatedAnnealingSearch(cur);
-			if(temp.score > best.score)
-				best = temp;
-		}
+		//how long search runs
+		int runTime = 1000;//1 second
+
+		//do search
+		Node best = simulatedAnnealingSearch(cur, runTime);
 		
 		//print out best config of bins
 		System.out.println("Bin1: " + Arrays.toString(best.bins[0]));
@@ -40,20 +24,26 @@ public class SimulatedAnnealing {
 	 * @param initBin
 	 * @return
 	 */
-	public static Node simulatedAnnealingSearch(Bins initBin) {
-		int curScore = initBin.calBins(initBin.bins);// find score of initBin
+	public static Node simulatedAnnealingSearch(Bins initBin, int runTime) {
+		double startingTemp = 1000;//helpful to have this for restarts
+		
+		// find score of initBin
+		int curScore = initBin.calBins(initBin.bins);
 		//set initial bin to be current node
 		Node current = new Node(initBin.bins, curScore); 
+		
+		//get time that we should stop running search
+		long endTime = System.currentTimeMillis() + runTime;
 		
 		//set best to be current
 		Node best = current;
 		
 		//set initial temperature
-		double t = 10000;
+		double t = startingTemp;
 		//set a cooling rate;
 		double coolingRate = 0.0001;
 
-		while (t > 1) {
+		while (System.currentTimeMillis() < endTime) {
 			//get a neighbor and find its score
 			int[][] neighbor = generateNeighbor(current.bins);
 			int neighborScore = new Bins().calBins(neighbor); 
@@ -65,10 +55,20 @@ public class SimulatedAnnealing {
 				current = new Node(neighbor, neighborScore);
 				curScore = neighborScore;
 				
-				//keep track of best move
+				//keep track of best move across all restarts
 				if(curScore > best.score){
 					best = current;
 				}
+			}
+			
+			//restart search when t gets really small
+			if(t < 0.000000001){
+				curScore = initBin.calBins(initBin.bins);// find score of initBin
+				//set initial bin to be current node
+				current = new Node(initBin.bins, curScore); 
+				
+				//reset the temperature
+				t = startingTemp;
 			}
 			
 			//reduce the temperature
