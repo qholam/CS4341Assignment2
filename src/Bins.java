@@ -23,8 +23,13 @@ public class Bins {
 		 * hashmap now of number of each which can be changed in inValid
 		 */
 	}
+
+	public Bins() {
+	}
 	
-	public Bins(){}
+	public Bins(int[][] nums){
+		this.bins=nums;
+	}
 
 	// parses the list into three bins and returns them as one 2D array
 	protected int[][] fillBins(int[] nums) {
@@ -32,23 +37,31 @@ public class Bins {
 		int[] bin1 = new int[nums.length / 3];
 		int[] bin2 = new int[nums.length / 3];
 		int[] bin3 = new int[nums.length / 3];
-
-		for (int i = 0; i < num.length; i++) {
-			int j = 0, k = 0, m = 0;
-			// if (isValid(num[j])){
-			if ((!numIn(bin1, nums[i])) && (bin1.length < cols)) {
-				bin1[j] = num[i];
-				j++;
-			} else if ((!numIn(bin2, nums[k])) && (bin2.length < cols)) {
-				bin2[k] = num[i];
-				k++;
-			} else {
-				bin3[m] = num[i];
-				m++;
-			}
-			// }
-			int[][] bins = { bin1, bin2, bin3 };
+		int counter = 0;
+		for (int i = 0; i < bin1.length; i++) {
+			bin1[i] = nums[i];
+			counter++;
 		}
+		for (int i = 0; i < bin2.length; i++) {
+			bin2[i] = nums[counter];
+			counter++;
+		}
+		for (int i = 0; i < bin3.length; i++) {
+			bin3[i] = nums[counter];
+			counter++;
+		}
+
+		int[][] binarray = { bin1, bin2, bin3 };
+		this.bins = binarray;
+
+		/*
+		 * for (int i = 0; i < num.length; i++) { int j = 0, k = 0, m = 0; // if
+		 * (isValid(num[j])){ if ((!numIn(bin1, nums[i])) && (bin1.length <
+		 * cols)) { bin1[j] = num[i]; j++; } else if ((!numIn(bin2, nums[k])) &&
+		 * (bin2.length < cols)) { bin2[k] = num[i]; k++; } else { bin3[m] =
+		 * num[i]; m++; } // } int[][] bins = { bin1, bin2, bin3 }; this.bins =
+		 * bins; }
+		 */
 		return bins;
 	}
 
@@ -88,31 +101,33 @@ public class Bins {
 	public int bin1(int[] list) {
 		int score = 0;
 		for (int i = 0; i < list.length; i++) {
-			score += list[i];
-			i++;
-			score -= list[i];
+			if (i % 2 == 0)
+				score += list[i];
+			else
+				score -= list[i];
 		}
 		return score;
 	}
 
 	// calculate the second bin's score
-	public int bin2(int[] list) throws IndexOutOfBoundsException {
-		int eye = 0;
-		int plus1 = 0;
-		int score = 0;
-		for (int i = 0; i < list.length; i++) {
-			eye = list[i];
-			try {
-				plus1 = list[i + 1];
-			} catch (Exception e) {
-
+	/*
+	 * Bin #2: for every pair of numbers at positions i and i+1, if the value at
+	 * position i+1 is larger than position i, it scores +3. If the value at
+	 * position i+1 is equal to the value at position i, it scores +5. If the
+	 * value at position i+1 is smaller than at position i, it scores -10.
+	 */
+	public int bin2(int[] list) {
+		int score=0;
+		for(int i=0;i<list.length-1;i++){
+			if(list[i+1]>list[i]){
+				score+=3;
 			}
-			if (eye < plus1) {
-				score += 3;
-			} else if (eye == plus1) {
-				score += 5;
-			} else
-				score -= 10;
+			else if(list[i+1]==list[i]){
+				score+=5;
+			}
+			else{
+				score-=10;
+			}
 		}
 		return score;
 	}
@@ -165,5 +180,15 @@ public class Bins {
 			}
 		}
 		return true;
+	}
+
+	public static void main(String argv[]) {
+		int[] nums = { 0, 9, 6, 8, 5, -7, -6, -7, 5 };
+		Bins b = new Bins(nums);
+		b.calBins(b.bins);
+		System.out.println(Arrays.toString(b.bins[0]));
+		System.out.println(Arrays.toString(b.bins[1]));
+		System.out.println(Arrays.toString(b.bins[2]));
+		System.out.println(b.calBins(b.bins));
 	}
 }
