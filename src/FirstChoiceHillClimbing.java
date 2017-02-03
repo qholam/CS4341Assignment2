@@ -3,30 +3,36 @@ import java.util.Arrays;
 public class FirstChoiceHillClimbing {
 	
 	public static void main(String[] args){
-		runSearch();
+		runSearch(new Bins());
 	}
 
 	/**
 	 * Creates bins and runs first choice hill climbing with repeats
 	 */
-	public static void runSearch() {
-		int[] nums = { 0, 9, 6, 8, 5, -7, -6, -7, 5 };
-		Bins b = new Bins(nums);
+	public static void runSearch(Bins initBin) {
+		int[] nums = { 0, -4, 6, 8, 5, -7, -6, -7, 5 };
+		//Bins cur = initBin;
+		Bins cur = new Bins(nums);
 
-		Node n = firstChoiceHillClimbingSearch(b);
+		//do initial search
+		Node best = firstChoiceHillClimbingSearch(cur);
 		
-		//repeat firstChoiceHillClimbingSearch 10 more times
+		//repeat firstChoiceHillClimbingSearch 10 more times with new start point
 		for(int i = 0; i < 10; i++){
-			Node temp = firstChoiceHillClimbingSearch(b);
-			if(temp.score > n.score)
-				n = temp;
+			//get a new starting point
+			//cur = new Bins(b.num);
+			cur = new Bins(nums);
+			
+			Node temp = firstChoiceHillClimbingSearch(cur);
+			if(temp.score > best.score)
+				best = temp;
 		}
 		
 		//print out best config of bins
-		System.out.println("Bin1: " + Arrays.toString(n.bins[0]));
-		System.out.println("Bin2: " +Arrays.toString(n.bins[1]));
-		System.out.println("Bin3: " +Arrays.toString(n.bins[2]));
-		System.out.println("Score: " + new Bins().calBins(n.bins));
+		System.out.println("Bin1: " + Arrays.toString(best.bins[0]));
+		System.out.println("Bin2: " +Arrays.toString(best.bins[1]));
+		System.out.println("Bin3: " +Arrays.toString(best.bins[2]));
+		System.out.println("Score: " + new Bins().calBins(best.bins));
 	}
 
 	/**
