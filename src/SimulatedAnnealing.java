@@ -56,6 +56,8 @@ public class SimulatedAnnealing {
 			return 1.0;
 		
 		//otherwise return some probability(found this function in the book)
+		//This returns some number between 0.000....1 and 0.999..
+		//The higher t is, the closer the probability of taking the move will be
 		return Math.exp((newScore-curScore)/t);
 	}
 	
