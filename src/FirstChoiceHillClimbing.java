@@ -1,11 +1,10 @@
 import java.util.Arrays;
 
 public class FirstChoiceHillClimbing {
-
+	/*
 	public static void main(String[] args) {
 		int[] nums = { 0, -4, 6, 8, 5, -7, -6, -7, 5, 0, -4, 6, 8, 5, -7, -6, -7, 5, 0, -4, 6, 8, 5, -7, -6, -7, 5, 0, -4, 6, 8, 5, -7, -6, -7, 5 };
 		Bins cur = new Bins(nums);
-
 		// set how long we want this to run
 		int runTime = 1000; // 1 second
 		
@@ -18,6 +17,7 @@ public class FirstChoiceHillClimbing {
 		System.out.println("Bin3: " + Arrays.toString(best.bins[2]));
 		System.out.println("Score: " + new Bins().calBins(best.bins));
 	}
+	*/
 
 	/**
 	 * Runs a single first choice hill climbing search

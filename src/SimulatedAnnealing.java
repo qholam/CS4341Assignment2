@@ -2,12 +2,12 @@ import java.util.Arrays;
 
 public class SimulatedAnnealing {
 	
-	public static void main(String[] args){
-		int[] nums = { 0, -4, 6, 8, 5, -7, -6, -7, 5, 0, -4, 6, 8, 5, -7, -6, -7, 5, 0, -4, 6, 8, 5, -7, -6, -7, 5, 0, -4, 6, 8, 5, -7, -6, -7, 5 };
+	/*public static void main(String[] args){
+		int[] nums = { 0, -4, 6, 8, 5, -7, -6, -7, 5, 0, -4, 6, 8, 5, -7, -6, -7, 5, 0, -4, 6, 8, 5, -7, -6, -7, 5, 0, -4, 6, 8, 5, -7, -6, -7, 5, 0, -4, 6, 8, 5, -7, -6, -7, 5, 0, -4, 6, 8, 5, -7, -6, -7, 5, 0, -4, 6, 8, 5, -7, -6, -7, 5, 0, -4, 6, 8, 5, -7, -6, -7, 5 };
 		Bins cur = new Bins(nums);
 		
 		//how long search runs
-		int runTime = 1000;//1 second
+		int runTime = 4000;//1 second
 
 		//do search
 		Node best = simulatedAnnealingSearch(cur, runTime);
@@ -17,7 +17,7 @@ public class SimulatedAnnealing {
 		System.out.println("Bin2: " +Arrays.toString(best.bins[1]));
 		System.out.println("Bin3: " +Arrays.toString(best.bins[2]));
 		System.out.println("Score: " + new Bins().calBins(best.bins));
-	}
+	}*/
 	
 	/**
 	 * Performs simulated annealing
@@ -41,7 +41,7 @@ public class SimulatedAnnealing {
 		//set initial temperature
 		double t = startingTemp;
 		//set a cooling rate;
-		double coolingRate = 0.0001;
+		double coolingRate = 0.003;
 
 		while (System.currentTimeMillis() < endTime) {
 			//get a neighbor and find its score

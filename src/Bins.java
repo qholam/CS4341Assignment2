@@ -11,6 +11,7 @@ public class Bins {
 	int[] num;
 	int cols = 0;
 	int[][] bins;
+	int score;
 
 	// bins is a catch-all that can cover and develop the initial distribution
 	// of all bins to be used in the searches
@@ -18,6 +19,7 @@ public class Bins {
 		this.num = nums;
 		this.cols = nums.length / 3;
 		bins = fillBins(num);
+		score = 0;
 		/*
 		 * Integer hashmap <number(key), number of those numbers(val) create
 		 * hashmap now of number of each which can be changed in inValid
@@ -98,7 +100,7 @@ public class Bins {
 	// This section holds the scoring functions for each bin. Each should be
 	// passed on row.
 	// This one calculates the first bin's score
-	public int bin1(int[] list) {
+	public static int bin1(int[] list) {
 		int score = 0;
 		for (int i = 0; i < list.length; i++) {
 			if (i % 2 == 0)
@@ -116,7 +118,7 @@ public class Bins {
 	 * position i+1 is equal to the value at position i, it scores +5. If the
 	 * value at position i+1 is smaller than at position i, it scores -10.
 	 */
-	public int bin2(int[] list) {
+	public static int bin2(int[] list) {
 		int score=0;
 		for(int i=0;i<list.length-1;i++){
 			if(list[i+1]>list[i]){
@@ -132,7 +134,7 @@ public class Bins {
 		return score;
 	}
 
-	public int bin3(int[] list) {
+	public static int bin3(int[] list) {
 		int listlength = list.length;
 		int[] firstarray = Arrays.copyOfRange(list, 0, listlength / 2);
 		int[] secondarray = Arrays.copyOfRange(list, listlength / 2, listlength);
@@ -168,7 +170,7 @@ public class Bins {
 		return firsthalf_score + secondhalf_score;
 	}
 
-	private boolean isPrime(int n) {
+	private static boolean isPrime(int n) {
 		if (n == 0 || n == 1) {
 			return false;
 		} else {
