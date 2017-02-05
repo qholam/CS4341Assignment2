@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class Genetic{
 	int[] nums;
-	//ArrayList<Populations> pop;
+	ArrayList<Populations> pop;
 	int k = 100; //the initial population size
 	ArrayList<Bins> popContain; 
 	int elite;
@@ -88,13 +88,13 @@ public class Genetic{
 			}
 			ArrayList<Integer>finalA = mutate(binASort, binAOrig);
 			ArrayList<Integer>finalB = mutate(binBSort, binAOrig);
-			Integer[] finalANums = convertInt(finalA);
+			Integer[] finalANums = finalA.toArray(finalANums);
 			int[] finalAInts = null;
 			for (int j = 0; j < finalANums.length; j++){
 				finalAInts[j] = finalANums[j].intValue();
 			}
 			pop.add(new Bins(finalAInts));
-			Integer[] finalBNums = convertInt(finalB);
+			Integer[] finalBNums = finalB.toArray(finalBNums);
 			int[] finalBInts = null;
 			for (int j = 0; j < finalBNums.length; j++){
 				finalBInts[j] = finalBNums[j].intValue();
@@ -104,14 +104,6 @@ public class Genetic{
 	  }
 	  pop.addAll(elites);
 //	return pop;  
-  }
-  
-  public static Integer[] convertInt(ArrayList<Integer> ints){
-	  Integer[] ret = new Integer[ints.size()];
-	  for(int i = 0; i < ret.length; i++){
-		  ret[i] = ints.get(i).intValue();
-	  }
-	  return ret;
   }
   
   protected ArrayList<Integer> mutate(ArrayList<Integer> a, ArrayList<Integer> sort){
@@ -147,9 +139,9 @@ public class Genetic{
 	ArrayList<Bins> fitness;
 	int size = this.popContain.size() / 3;
 	//for each bin in population
-	int [] temp1 = new int[size];
-	int [] temp2= new int[size];
-	int [] temp3= new int[size];
+	int [] temp1;
+	int [] temp2;
+	int [] temp3;
 	for (int i = 0; i < size; i++){
 		 temp1[i] = bin.bins[1][i]; // this isn't actually right
 	}

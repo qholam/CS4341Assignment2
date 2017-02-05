@@ -1,5 +1,7 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Random;
 
 /*This is a few functions to break up assignment 2 in a way I believe will make things easier
  *So far there is a class named Bins with the bins and calculation functions
@@ -27,15 +29,23 @@ public class Bins {
 	}
 
 	public Bins() {
+		bins = new int[3][1];
 	}
-	
-	public Bins(int[][] nums){
-		this.bins=nums;
+
+	public Bins(int[][] nums) {
+		bins = new int[nums.length][nums[0].length];
+		for(int i = 0; i < nums.length; i++){
+			for(int j = 0; j < nums[0].length; j++){
+				bins[i][j] = nums[i][j];
+			}
+		}
 	}
 
 	// parses the list into three bins and returns them as one 2D array
 	protected int[][] fillBins(int[] nums) {
-		Collections.shuffle(Arrays.asList(nums));
+		// shuffle numbers to randomize state of initial bin
+		nums = shuffleArray(nums);
+
 		int[] bin1 = new int[nums.length / 3];
 		int[] bin2 = new int[nums.length / 3];
 		int[] bin3 = new int[nums.length / 3];
@@ -65,6 +75,30 @@ public class Bins {
 		 * bins; }
 		 */
 		return bins;
+	}
+
+	public static int[] shuffleArray(int[] nums) {
+		int[] a = new int[nums.length];
+		
+		for(int i = 0; i < nums.length; i++){
+			a[i] = nums[i];
+		}
+		
+		int n = a.length;
+		Random random = new Random();
+		random.nextInt();
+		for (int i = 0; i < n; i++) {
+			int change = i + random.nextInt(n - i);
+			swap(a, i, change);
+		}
+		
+		return a;
+	}
+
+	private static void swap(int[] a, int i, int change) {
+		int helper = a[i];
+		a[i] = a[change];
+		a[change] = helper;
 	}
 
 	/*
@@ -119,16 +153,14 @@ public class Bins {
 	 * value at position i+1 is smaller than at position i, it scores -10.
 	 */
 	public static int bin2(int[] list) {
-		int score=0;
-		for(int i=0;i<list.length-1;i++){
-			if(list[i+1]>list[i]){
-				score+=3;
-			}
-			else if(list[i+1]==list[i]){
-				score+=5;
-			}
-			else{
-				score-=10;
+		int score = 0;
+		for (int i = 0; i < list.length - 1; i++) {
+			if (list[i + 1] > list[i]) {
+				score += 3;
+			} else if (list[i + 1] == list[i]) {
+				score += 5;
+			} else {
+				score -= 10;
 			}
 		}
 		return score;
