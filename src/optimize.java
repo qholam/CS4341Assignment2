@@ -45,7 +45,7 @@ public class optimize {
 		// get user input
 		optimize opt = new optimize();
 		Scanner scanner = new Scanner(System.in);
-		System.out.print("Enter the type of optimizatin: ");
+		System.out.print("Enter the type of optimization: ");
 		String type = scanner.next();
 		System.out.print("Enter the filename: ");
 		String filename = scanner.next();
@@ -76,11 +76,11 @@ public class optimize {
 		} else if (type.equals("ga")) {
 			// make population
 			ArrayList<Bins> pop = new ArrayList<Bins>();
-			for(int i = 0; i < 1000; i++){
+			for(int i = 0; i < 100; i++){
 				pop.add(new Bins(nums));
 			}
 
-			double elitism = 0.05;
+			double elitism = 0.15;
 			Bins best = ga.gaSearch(pop, runTime, elitism);
 
 			System.out.println("Bin1: " + Arrays.toString(best.bins[0]));
