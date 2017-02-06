@@ -80,7 +80,7 @@ public class optimize {
 				pop.add(new Bins(nums));
 			}
 
-			double elitism = 0.15;
+			double elitism = 0.25;
 			Bins best = ga.gaSearch(pop, runTime, elitism);
 
 			System.out.println("Bin1: " + Arrays.toString(best.bins[0]));

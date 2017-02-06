@@ -7,13 +7,14 @@ import java.util.Random;
 public class ga {
 	public static Bins gaSearch(ArrayList<Bins> population, int runTime, double elitism) {
 		long endTime = System.currentTimeMillis() + runTime;
+		int size = population.size();
+		sortByFitness(population);
 		while (System.currentTimeMillis() < endTime) {
 			// sort population by fitness (sorts from highest score to lowest
 			// score)
-			sortByFitness(population);
 
 			// choose elites to preserve top 20% for now
-			ArrayList<Bins> elites = new ArrayList<Bins>(population.subList(0, (int) (elitism * population.size())));
+			ArrayList<Bins> elites = new ArrayList<Bins>(population.subList(0, (int) (elitism * size)));
 			ArrayList<Bins> newPopulation = new ArrayList<Bins>();
 
 			for (int i = 0; i < population.size(); i++) {
@@ -37,8 +38,9 @@ public class ga {
 				newPopulation.add(child);
 
 				// large population sizes may make this for loop run a long time
-				if (System.currentTimeMillis() > endTime)
+				if (System.currentTimeMillis() > endTime){
 					break;
+				}
 			}
 
 			// new population is the preserved list and the new population which
@@ -46,6 +48,7 @@ public class ga {
 			population = new ArrayList<Bins>();
 			population.addAll(elites);
 			population.addAll(newPopulation);
+			sortByFitness(population);
 		}
 
 		// first element should be best arrangement of bins
@@ -54,54 +57,67 @@ public class ga {
 
 	public static Bins reproduce(Bins x, Bins y) {
 		Bins child = new Bins(x.bins);
+		int count = 0;
 
-		// randomly take columns from x and y
-		for (int col = 0; col < x.bins[0].length; col++) {
-			int randNum = (int) (Math.random() * 2 + 1);
-			for (int row = 0; row < x.bins.length; row++) {
-				if(randNum % 2 == 0)
-					child.bins[row][col] = x.bins[row][col];
-				else
-					child.bins[row][col] = y.bins[row][col];
+		ArrayList<Integer> newArray1 = new ArrayList<Integer>();
+		ArrayList<Integer> childArray1 = new ArrayList<Integer>();
+		
+		//take best rows from x and y and pass to child
+		int row1x = Bins.bin1(x.bins[0]);
+		int row2x = Bins.bin2(x.bins[1]);
+		int row3x = Bins.bin3(x.bins[2]);
+		int row1y = Bins.bin1(y.bins[0]);
+		int row2y = Bins.bin2(y.bins[1]);
+		int row3y = Bins.bin3(y.bins[2]);
+		for(int col = 0; col < x.bins[0].length; col++){
+			if(row1x > row1y){
+				childArray1.add(x.bins[0][col]);
 			}
+			else
+				childArray1.add(y.bins[0][col]);
+			
+			newArray1.add(x.bins[0][col]);
 		}
-
-		/* check if child array is valid, if not fix it */
-		ArrayList<Integer> childArray = new ArrayList<Integer>();
-		ArrayList<Integer> newArray = new ArrayList<Integer>();
-		for(int bin = 0; bin < 3; bin++){
-			for (int n = 0; n < child.bins[0].length; n++) {
-				int[] b = child.bins[bin];
-				childArray.add(b[n]);
+		for(int col = 0; col < x.bins[1].length; col++){
+			if(row2x > row2y){
+				childArray1.add(x.bins[1][col]);
 			}
+			else
+				childArray1.add(y.bins[1][col]);
+			
+			newArray1.add(x.bins[1][col]);
 		}
-		for (int n = 0; n < x.bins[0].length; n++) {
-			int[] bin0 = x.bins[0];
-			int[] bin1 = x.bins[1];
-			int[] bin2 = x.bins[2];
-			newArray.add(bin0[n]);
-			newArray.add(bin1[n]);
-			newArray.add(bin2[n]);
+		for(int col = 0; col < x.bins[2].length; col++){
+			if(row3x > row3y){
+				childArray1.add(x.bins[2][col]);
+			}
+			else
+				childArray1.add(y.bins[2][col]);
+			
+			newArray1.add(x.bins[2][col]);
 		}
+		
 		// check if child array has too many of a certain numbers, mark repeats
 		// with -10
-		for (int n = 0; n < childArray.size(); n++) {
-			Integer cur = new Integer(childArray.get(n));
-			if (newArray.contains(cur)) {
-				newArray.remove(cur);
+		for (int n = 0; n < childArray1.size(); n++) {
+			Integer cur = new Integer(childArray1.get(n));
+			//Integer cur2 = new Integer(childArray2.get(n));
+			if (newArray1.contains(cur)) {
+				newArray1.remove(cur);
 			} else {
-				childArray.set(n, new Integer(-10));
+				childArray1.set(n, new Integer(-10));
 			}
 		}
-		// loop through child array and replace -10
-		for (int n = 0; n < newArray.size(); n++) {
-			childArray.set(childArray.indexOf(-10), newArray.get(n));
-		}
-		// add child array to child bin
-		int count = 0;
+
+		// loop through child array add elements and replace -10
+		count = 0;
 		for (int i = 0; i < child.bins.length; i++) {
 			for (int j = 0; j < child.bins[0].length; j++) {
-				child.bins[i][j] = childArray.get(count);
+				int c1 = childArray1.get(count);
+				if(c1 != -10)
+					child.bins[i][j] = c1;
+				else
+					child.bins[i][j] = newArray1.remove(0);
 				count++;
 			}
 		}
@@ -118,6 +134,8 @@ public class ga {
 	 * @return
 	 */
 	public static Bins randomSelection(ArrayList<Bins> population) {
+		return population.get((int) (Math.random()*population.size() * 0.1));
+	/*
 		Bins randBin = new Bins();
 
 		// found this weighted biased random number generation online
@@ -143,7 +161,7 @@ public class ga {
 			}
 		}
 
-		return randBin;
+		return randBin;*/
 	}
 
 	protected static void sortByFitness(ArrayList<Bins> pop) {
